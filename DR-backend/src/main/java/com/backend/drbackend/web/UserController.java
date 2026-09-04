@@ -15,12 +15,25 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     @Autowired
     private UserService userService;
 
     @PostMapping("register")
-    public R register(String nickName, String loginName, String loginPwd, String email) {
+    public R register(@RequestBody User user) {
+        try{
+            user.setScore(200);
+            userService.save(user);
+            return new R(2000,"注册成功",null);
+        }catch (Exception e){
+            e.printStackTrace(); // 关键：把真正的异常打印出来
+            return new R(5000,"注册失败，昵称或用户名重复"+e.getMessage(),null);
+        }
+    }
+
+    @PostMapping("register2")
+    public R register2(String nickName, String loginName, String loginPwd, String email) {
         try{
             User u = new User();
             u.setNickName(nickName);
@@ -37,13 +50,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public R login(String loginName, String loginPwd) {
+    public R login(@RequestBody Map<String,Object> map) {
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("user_name",loginName);
-        qw.eq("user_password",loginPwd);
-        User user = userService.getOne(qw);
-        if(user!=null){
-            return new R(2000,"登录成功!","你好"+user.getNickName());
+        qw.eq("user_name",map.get("userName"));
+        qw.eq("user_password",map.get("userPwd"));
+        User u = userService.getOne(qw);
+        if(u!=null){
+            return new R(2000,"登录成功!","你好"+u.getNickName());
         }
         else{
             return new R(4001,"用户名或密码错误",null);

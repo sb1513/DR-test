@@ -18,6 +18,13 @@ const router = useRouter()
     <RouterLink to="/tiger">
       <button class="btn btn-neutral btn-ghost">Tiger</button>
     </RouterLink>
+    <br/>
+    <RouterLink :to="{name: 'LoginPage-index'}">
+      <button class="btn btn-neutral btn-ghost">登录</button>
+    </RouterLink>
+    <RouterLink :to="{name: 'RegisterPage-index'}">
+      <button class="btn btn-neutral btn-ghost">注册</button>
+    </RouterLink>
   </div>
 </template>
 

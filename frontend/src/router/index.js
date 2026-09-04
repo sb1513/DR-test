@@ -1,8 +1,10 @@
 import { createRouter,createWebHistory} from 'vue-router';
-import Home from "../pages/Home/Home.vue";
+import Home from "../pages/home/Home.vue";
 import Dog from "../pages/chat/dog.vue";
 import Cat from "../pages/chat/cat.vue";
 import Tiger from "../pages/chat/tiger.vue";
+import Register from "../pages/user/Register.vue";
+import Login from "../pages/user/Login.vue";
 
  const  routes= [
      {
@@ -24,6 +26,16 @@ import Tiger from "../pages/chat/tiger.vue";
         path: '/tiger',
         name: 'TigerChatPage-index',
         component: Tiger
+     },
+     {
+        path: '/register',
+        name: 'RegisterPage-index',
+        component: Register
+     },
+     {
+        path: '/login',
+        name: 'LoginPage-index',
+        component: Login
      },
     ]
 const router = createRouter({
