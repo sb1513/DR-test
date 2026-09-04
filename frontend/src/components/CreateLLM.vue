@@ -14,7 +14,6 @@ const props = defineProps({
 
 const searchQuery=ref('')
 const ans=ref('')
-const api_key='sk-ws-H.PMMRMPX.PuCC.MEQCIDzt30LX8eQ7rtRq_d-_fd6bYhDT9_IZKSHktCZawLxmAiBEyT8fUXCapD40pAThgBM3ps0NvWG8J23r4j2jE1GEtg'
 
 const send = () =>  {
 // 1. 准备要发送的 JSON 数据对象
