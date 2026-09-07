@@ -1,7 +1,10 @@
 <script setup>
 import Home from "./pages/home/Home.vue";
+import Sidebar from "./components/sidebar/Sidebar.vue";
 </script>
 
 <template>
-  <router-view/>
+  <Sidebar>
+    <router-view/>
+  </Sidebar>
 </template>

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,7 +29,7 @@ public class UserController {
             return new R(2000,"注册成功",null);
         }catch (Exception e){
             e.printStackTrace(); // 关键：把真正的异常打印出来
-            return new R(5000,"注册失败，昵称或用户名重复"+e.getMessage(),null);
+            return new R(5000,"注册失败，昵称或用户名重复",null);
         }
     }
 
@@ -56,7 +57,11 @@ public class UserController {
         qw.eq("user_password",map.get("userPwd"));
         User u = userService.getOne(qw);
         if(u!=null){
-            return new R(2000,"登录成功!","你好"+u.getNickName());
+            Map<String,Object> map1 = new HashMap<>();
+            map1.put("id",u.getId());
+            map1.put("nickName",u.getNickName());
+            map1.put("userName",u.getUserName());
+            return new R(2000,"登录成功!",map1);
         }
         else{
             return new R(4001,"用户名或密码错误",null);

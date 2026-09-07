@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import {useRouter} from "vue-router";
+import axios from "../axios/index.js";
 
 const props = defineProps({
   title: {
@@ -14,6 +16,33 @@ const props = defineProps({
 
 const searchQuery=ref('')
 const ans=ref('')
+const router = useRouter()
+
+if(sessionStorage.getItem("cur_user")==null){
+  alert("请登录")
+  router.push("/login")
+}
+
+function handlefavs(){
+  if(!ans.value){
+    alert("收藏失败")
+    return
+  }
+  let user_id = JSON.parse(sessionStorage.getItem("cur_user")).id
+  axios({
+      method: 'post',
+      url: 'http://localhost:8080/user/favs/newfavs',
+      data: {
+        userId: parseInt(user_id),
+        favAsk: searchQuery.value+"--"+props.systemprompt,
+        favAns: ans.value,
+      }
+    }).then(res=>{
+      alert(res.data.msg)
+    }).catch(err=>{
+      console.log(err.message)
+    })
+}
 
 const send = () =>  {
 // 1. 准备要发送的 JSON 数据对象
@@ -67,6 +96,7 @@ const send = () =>  {
     <input type="text" v-model="searchQuery" placeholder="输入你想问的内容"/>
     <button class="btn btn-neutral cursor-pointer btn-ghost">send</button>
   </form>
+  <button @click="handlefavs">收藏</button>
   <RouterLink :to="{name: 'HomePage-index'}">
     <button class="btn btn-neutral cursor-pointer btn-ghost">Home</button>
   </RouterLink>

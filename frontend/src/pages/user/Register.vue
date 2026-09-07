@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import axios from "../../axios/index.js";
+import {useRouter} from "vue-router";
 
 const user = ref({
   nickName: "",
@@ -10,6 +11,7 @@ const user = ref({
   email: "",
 })
 const errMessage = ref("")
+const router = useRouter()
 
 function send(){
   //用axios向后端发送请求
@@ -31,10 +33,15 @@ function send(){
       data: user.value
     }).then(res=>{
       alert(res.data.msg)
-      errMessage.value=res.data.msg
+      sessionStorage.setItem("cur_user",JSON.stringify(user))
+      sessionStorage.setItem("token",user.id)
+      //errMessage.value=res.data.msg
+      router.push({name: "HomePage-index"})
+    }).catch(err=>{
+      alert(err.message)
     })
   }
-  console.log(errMessage)
+  //console.log(errMessage)
 }
 
 </script>
@@ -55,7 +62,7 @@ function send(){
       确认密码:<input type="password" v-model="user.rePwd" placeholder="请确认密码"/><br/>
     </div>
     <div>
-      emal:<input type="text" v-model="user.email" placeholder="请输入邮箱"/><br/>
+      email:<input type="text" v-model="user.email" placeholder="请输入邮箱"/><br/>
     </div>
     <div>
       <button @click="send">注册</button>

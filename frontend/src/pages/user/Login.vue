@@ -1,10 +1,12 @@
 <script setup>
 import {ref} from "vue";
 import axios from "../../axios/index.js";
+import {useRouter} from "vue-router";
 
 const loginName = ref("")
 const loginPwd = ref("")
 const errMessage = ref("")
+const router = useRouter()
 
 function send(){
   //用axios向后端发送请求
@@ -24,6 +26,13 @@ function send(){
     }).then(res=>{
       alert(res.data.msg)
       errMessage.value=res.data.msg
+
+      let user = res.data.data
+      sessionStorage.setItem("cur_user",JSON.stringify(user))
+      sessionStorage.setItem("token",user.id)
+      router.push({name: "HomePage-index"})
+    }).catch(err=>{
+      alert(err.messsage)
     })
   }
   console.log(errMessage)
@@ -43,6 +52,9 @@ function send(){
     <div>
       <button @click="send">登录</button>
     </div>
+    <RouterLink :to="{name: 'RegisterPage-index'}">
+      <button>注册</button>
+    </RouterLink>
     <RouterLink :to="{name: 'HomePage-index'}">
       <button>首页</button>
     </RouterLink>

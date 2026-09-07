@@ -5,6 +5,7 @@ import Cat from "../pages/chat/cat.vue";
 import Tiger from "../pages/chat/tiger.vue";
 import Register from "../pages/user/Register.vue";
 import Login from "../pages/user/Login.vue";
+import Favs from "../pages/favs/Favs.vue";
 
  const  routes= [
      {
@@ -36,6 +37,11 @@ import Login from "../pages/user/Login.vue";
         path: '/login',
         name: 'LoginPage-index',
         component: Login
+     },
+     {
+        path: '/favs',
+        name: 'FavsPage-index',
+        component: Favs
      },
     ]
 const router = createRouter({
