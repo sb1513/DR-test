@@ -33,6 +33,7 @@ dist/
 .env.*
 application-local.yml
 application-local.yaml
+application.yml
 
 # =========================
 # Database

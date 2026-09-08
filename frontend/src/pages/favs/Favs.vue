@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import axios from "axios";
+import axios from "../../axios/index.js";
 import {useRouter} from "vue-router";
 
 const favs = ref([])
@@ -9,23 +9,29 @@ const showDetailId = ref([])
 const editAsk = ref("")
 const editAns = ref("")
 const editFavId = ref(null)
+const searchQuery = ref("")
+const pageNum = ref(1)//当前页数
+const pageTotal = ref(1)// 总页数
+const pageSize = ref(0)//结果数量
 
-if(sessionStorage.getItem("cur_user")==null){
-  alert("请登录")
-  router.push("/login")
+function changePage(num){
+  pageNum.value=num
+  loadFavs()
 }
 
 function loadFavs(){
-  let user_id = sessionStorage.getItem("token")
+  //let user_id = sessionStorage.getItem("token")
   axios({
       method: 'get',
-      url: `http://localhost:8080/user/favs/list/${user_id}`,
+      url: `/user/favs/list?pageNum=${pageNum.value}&pageSize=${5}&find=${searchQuery.value}`,
     }).then(res=>{
-      favs.value=res.data.data
+      let pg = res.data.data
+      favs.value=pg.records
+      pageTotal.value=pg.pages
+      pageSize.value=pg.total
       //console.log(favs.value.length)
       //alert(res.data.msg)
-    }).catch(err=>{
-      console.log(err.message)
+      //console.log(res.data.code)
     })
 }
 
@@ -63,7 +69,7 @@ const cancelEdit = (fav) => {
 function handleUpdate(fav){
   axios({
     method: 'post',
-    url: `http://localhost:8080/user/favs/update`,
+    url: `/user/favs/update`,
     data: {
       favId: fav.favId,
       userId: fav.userId,
@@ -74,6 +80,7 @@ function handleUpdate(fav){
     //favs.value=res.data.data
     //console.log(favs.value.length)
     alert(res.data.msg)
+    loadFavs()
   }).catch(err=>{
     console.log(err.message)
   })
@@ -83,13 +90,11 @@ function handleDelete(fav){
   if(confirm("确认要删除吗?")) {
     axios({
       method: 'post',
-      url: `http://localhost:8080/user/favs/delete`,
+      url: `/user/favs/delete`,
       data: fav,
     }).then(res => {
       alert(res.data.msg)
       loadFavs()
-    }).catch(err => {
-      console.log(err.message)
     })
   }
 }
@@ -103,6 +108,10 @@ onMounted(()=>{
   <div>
     <h1>收藏</h1>
     <div v-if="!favs.length">还没有收藏哦</div>
+    <form @submit.prevent>
+      <input type="text" v-model="searchQuery" placeholder="请输入搜索内容">
+      <button @click="loadFavs()">搜索</button>
+    </form>
     <div v-for="fav in favs" :key="fav.favId">
       <span>{{ fav.favAsk.split('--')[0] }}<button @click="handleDetail(fav)">{{ showDetailId.includes(fav.favId)?"收起":"详细" }}</button></span>
       <div v-if="showDetailId.includes(fav.favId)">
@@ -126,6 +135,9 @@ onMounted(()=>{
       </div>
       <button @click="Edit(fav)">编辑</button>
       <button @click="handleDelete(fav)">删除</button>
+    </div>
+    <div>
+      <span v-for="p in pageTotal" @click="changePage(p)">{{ p }}</span>【{{pageNum}}/{{pageTotal}}页,共{{pageSize}}条】
     </div>
     <RouterLink :to="{name: 'HomePage-index'}">
       <button class="btn btn-neutral btn-ghost">首页</button>

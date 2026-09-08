@@ -13,12 +13,14 @@ function send(){
   errMessage.value=''
   if(!loginName.value.trim()){
     errMessage.value="用户名不能为空"
+    alert(errMessage.value)
   }else if(!loginPwd.value.trim()){
     errMessage.value="密码不能为空"
+    alert(errMessage.value)
   }else{
     axios({
       method: 'post',
-      url: 'http://localhost:8080/user/login',
+      url: '/user/login',
       data: {
         userName: loginName.value,
         userPwd: loginPwd.value,
@@ -27,15 +29,14 @@ function send(){
       alert(res.data.msg)
       errMessage.value=res.data.msg
 
-      let user = res.data.data
+      let user = res.data.data.user
+      let token = res.data.data.token
       sessionStorage.setItem("cur_user",JSON.stringify(user))
-      sessionStorage.setItem("token",user.id)
+      sessionStorage.setItem("token",token)
       router.push({name: "HomePage-index"})
-    }).catch(err=>{
-      alert(err.messsage)
     })
   }
-  console.log(errMessage)
+  //console.log(errMessage)
 }
 
 </script>

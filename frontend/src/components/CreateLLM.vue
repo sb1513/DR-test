@@ -18,11 +18,6 @@ const searchQuery=ref('')
 const ans=ref('')
 const router = useRouter()
 
-if(sessionStorage.getItem("cur_user")==null){
-  alert("请登录")
-  router.push("/login")
-}
-
 function handlefavs(){
   if(!ans.value){
     alert("收藏失败")
@@ -31,7 +26,7 @@ function handlefavs(){
   let user_id = JSON.parse(sessionStorage.getItem("cur_user")).id
   axios({
       method: 'post',
-      url: 'http://localhost:8080/user/favs/newfavs',
+      url: '/user/favs/newfavs',
       data: {
         userId: parseInt(user_id),
         favAsk: searchQuery.value+"--"+props.systemprompt,
@@ -39,8 +34,6 @@ function handlefavs(){
       }
     }).then(res=>{
       alert(res.data.msg)
-    }).catch(err=>{
-      console.log(err.message)
     })
 }
 

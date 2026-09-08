@@ -6,6 +6,7 @@ import Tiger from "../pages/chat/tiger.vue";
 import Register from "../pages/user/Register.vue";
 import Login from "../pages/user/Login.vue";
 import Favs from "../pages/favs/Favs.vue";
+import Update from "../pages/user/Update.vue";
 
  const  routes= [
      {
@@ -16,17 +17,20 @@ import Favs from "../pages/favs/Favs.vue";
      {
         path: '/cat',
         name: 'CatChatPage-index',
-        component: Cat
+        component: Cat,
+        meta: {isLogin:true}
      },
      {
         path: '/dog',
         name: 'DogChatPage-index',
-        component: Dog
+        component: Dog,
+        meta: {isLogin: true}
      },
      {
         path: '/tiger',
         name: 'TigerChatPage-index',
-        component: Tiger
+        component: Tiger,
+        meta: {isLogin: true}
      },
      {
         path: '/register',
@@ -39,14 +43,29 @@ import Favs from "../pages/favs/Favs.vue";
         component: Login
      },
      {
+        path: '/user_update',
+        name: 'UserUpdatePage-index',
+        component: Update,
+        meta: {isLogin: true}
+     },
+     {
         path: '/favs',
         name: 'FavsPage-index',
-        component: Favs
+        component: Favs,
+        meta: {isLogin: true}
      },
     ]
 const router = createRouter({
     routes,
     history: createWebHistory(),
+})
+
+router.beforeEach((to,from)=>{
+  if(!to.meta.isLogin || sessionStorage.getItem("token")){
+      return
+  }
+  alert("请登录")
+  return ("/login")
 })
 
 export default router;

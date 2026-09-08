@@ -2,6 +2,7 @@ package com.backend.drbackend.web;
 
 import com.backend.drbackend.entity.User;
 import com.backend.drbackend.service.UserService;
+import com.backend.drbackend.utils.JWTutil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ import java.util.Map;
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
+    @Autowired
+    private JWTutil jwtutil;
+
     @Autowired
     private UserService userService;
 
@@ -58,10 +62,11 @@ public class UserController {
         User u = userService.getOne(qw);
         if(u!=null){
             Map<String,Object> map1 = new HashMap<>();
+            String jwt = jwtutil.generateToken(Map.of("user_id",u.getId(),"nickName",u.getNickName()));
             map1.put("id",u.getId());
             map1.put("nickName",u.getNickName());
             map1.put("userName",u.getUserName());
-            return new R(2000,"登录成功!",map1);
+            return new R(2000,"登录成功!",Map.of("user",map1,"token",jwt));
         }
         else{
             return new R(4001,"用户名或密码错误",null);
@@ -69,9 +74,11 @@ public class UserController {
     }
 
     @PostMapping("/user_update")
-    public R user_update(String loginName, String loginPwd, String newPwd) {
+    public R user_update(@RequestAttribute("user_id") int user_id,@RequestBody Map<String, String> map) {
+        String loginPwd = map.get("loginPwd");
+        String newPwd = map.get("newPwd");
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("user_name",loginName);
+        qw.eq("user_id",user_id);
         qw.eq("user_password",loginPwd);
         User user = userService.getOne(qw);
         if(user!=null){
@@ -81,6 +88,19 @@ public class UserController {
         }
         else{
             return new R(4001,"用户名或密码错误",null);
+        }
+    }
+
+    @PostMapping("/user_delete")
+    public R user_delete(@RequestBody Map<String,Object> map) {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("user_id",map.get("id"));
+        User user = userService.getOne(qw);
+        if(user!=null){
+            userService.removeById(user.getId());
+            return new R (2000, "注销成功", null);
+        }else{
+            return new R (5001, "注销失败",null);
         }
     }
 

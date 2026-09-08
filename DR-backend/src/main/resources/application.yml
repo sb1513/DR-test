@@ -15,3 +15,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8080
+my:
+  jwt:
+    secret: Ciallo0d000721Ciallo0d000721Ciallo0d000721Ciallo0d000721Ciallo0d000721
+    exp: 7200000

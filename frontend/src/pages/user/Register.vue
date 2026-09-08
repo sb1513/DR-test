@@ -18,27 +18,28 @@ function send(){
   errMessage.value=''
   if(!user.value.nickName.trim()){
     errMessage.value="昵称不能为空"
+    alert(errMessage.value)
   }else if(!user.value.userName.trim()){
     errMessage.value="用户名不能为空"
+    alert(errMessage.value)
   }else if(!user.value.email.trim()){
     errMessage.value="邮箱不能为空"
+    alert(errMessage.value)
   }else if(!user.value.userPwd.trim()){
     errMessage.value="密码不能为空"
+    alert(errMessage.value)
   }else if(user.value.userPwd.trim()!==user.value.rePwd.trim()){
     errMessage.value="密码不相同"
+    alert(errMessage.value)
   }else{
     axios({
       method: 'post',
-      url: 'http://localhost:8080/user/register',
+      url: '/user/register',
       data: user.value
     }).then(res=>{
       alert(res.data.msg)
-      sessionStorage.setItem("cur_user",JSON.stringify(user))
-      sessionStorage.setItem("token",user.id)
       //errMessage.value=res.data.msg
       router.push({name: "HomePage-index"})
-    }).catch(err=>{
-      alert(err.message)
     })
   }
   //console.log(errMessage)
