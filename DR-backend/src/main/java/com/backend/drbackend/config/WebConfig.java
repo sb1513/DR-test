@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/favs/list","/user/user_update");
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/favs/list","/user/user_update","/user/user_delete","/user/favs/update","/user/favs/update","/user/favs/delete");
     }
 }

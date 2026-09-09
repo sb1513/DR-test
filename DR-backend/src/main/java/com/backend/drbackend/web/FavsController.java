@@ -41,7 +41,7 @@ public class FavsController {
         QueryWrapper<Favs> qw = new QueryWrapper<>();
         qw.eq("fav_user_id",user_id);
         qw.like(!find.isEmpty(),"fav_ask",find);
-        qw.orderByAsc("fav_create_time");
+        qw.orderByDesc("fav_create_time");
         favsService.page(pg,qw);
         return new R (2000, "获取成功", pg);
     }
