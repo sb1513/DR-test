@@ -1,0 +1,46 @@
+spring:
+  ai:
+    openai:
+      api-key: sk-ws-H.PMMRMPX.z5Dg.MEQCIA2UE3aFd8Yaqh3xxpw5J3i09mnPrAuZwXgvDXImKuFxAiB9radyr6GlW07aKqJtrY8FCIMBz5mUpy7N23noYdL2mw
+      base-url: https://ws-fk5j9l8ai3udsg8n.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+      chat:
+        model: qwen-flash-character-2026-02-26
+        temperature: 1
+  mail:
+    host: smtp.qq.com          # QQ: smtp.qq.com | 163: smtp.163.com
+    port: 465                  # 465=SSL；若用 587 需开 STARTTLS（见下文）
+    username: 2184260057@qq.com  # 发件邮箱
+    password:  zjdfugzezejbdibc # SMTP 授权码，不是邮箱登录密码！
+    protocol: smtps
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true       # 465 端口必须开
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+  application:
+    name: DR-backend
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/dr-test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: a1234567
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+my:
+  jwt:
+    secret: Ciallo0d000721Ciallo0d000721Ciallo0d000721Ciallo0d000721Ciallo0d000721
+    exp: 7200000

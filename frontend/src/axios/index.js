@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const service = axios.create({
     timeout: 50000,
-    baseURL: "http://localhost:8080",
+    //baseURL: "http://8.134.115.7:8085/api",
+    baseURL: "http://localhost:8080/api",
 })
 
 service.interceptors.request.use(
@@ -24,7 +25,7 @@ service.interceptors.response.use(
     if (res.data.code === 2000)
         return res; // 业务成功直接返回数据
     alert(res.data.msg ); // 业务异常提示
-    return Promise.reject(new Error(res.data.message));
+    return Promise.reject(new Error(res.data.msg));
   },
   // 2. 处理 HTTP 4xx / 5xx 及网络异常
   (error) => {

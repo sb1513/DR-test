@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/favs")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 public class FavsController {
     @Autowired
     private JWTutil jwtutil;
